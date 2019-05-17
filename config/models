@@ -1,0 +1,12 @@
+User
+    ident    Text
+    password Text Maybe
+    UniqueUser ident
+    deriving Typeable
+
+Article json -- Adding "json" causes ToJSON and FromJSON instances to be derived.
+    body        Text
+    publishDate UTCTime
+    authorId    UserId
+    deriving Eq
+    deriving Show

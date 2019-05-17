@@ -1,0 +1,9 @@
+/auth                AuthR      Auth   getAuth
+
+/favicon.ico         FaviconR   GET
+/robots.txt          RobotsR    GET
+
+/                    HomeR      GET
+
+/articles            ArticlesR  GET POST
+/article/#ArticleId  ArticleR   GET PUT DELETE
