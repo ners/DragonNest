@@ -110,6 +110,8 @@ flags:
 default-extensions:
 - CPP
 - DeriveDataTypeable
+- DeriveGeneric
+- DuplicateRecordFields
 - EmptyDataDecls
 - FlexibleContexts
 - FlexibleInstances

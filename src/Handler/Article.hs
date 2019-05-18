@@ -2,25 +2,17 @@ module Handler.Article where
 
 import Import
 
+import Model.Article
+
 getArticleR :: ArticleId -> Handler Value
-getArticleR articleId = runDB $ get404 articleId >>= returnJson
+getArticleR articleId = runDB (get404 articleId) >>= returnArticle
 
 putArticleR :: ArticleId -> Handler Value
 putArticleR articleId = do
-    newArticle <- requireJsonBody
-    requireOwnedArticle articleId >> runDB (replace articleId newArticle) >>=
-        returnJson
+    article <- articleFromRequest
+    ownedArticle articleId >> runDB (replace articleId article) >>
+        returnArticle article
 
 deleteArticleR :: ArticleId -> Handler Value
 deleteArticleR articleId =
-    requireOwnedArticle articleId >> runDB (delete articleId) >> sendResponse ()
-
-requireOwnedArticle :: ArticleId -> Handler (Entity Article)
-requireOwnedArticle articleId = do
-    userId <- requireAuthId
-    maybeArticle <-
-        runDB $
-        selectFirst [ArticleId ==. articleId, ArticleAuthorId ==. userId] []
-    case maybeArticle of
-        Nothing      -> sendResponseStatus status403 ()
-        Just article -> return article
+    ownedArticle articleId >> runDB (delete articleId) >> sendResponse ()
